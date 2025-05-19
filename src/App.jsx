@@ -64,7 +64,7 @@ function App() {
                 </motion.span>
               ))}
             </p>
-            <p className='absolute top-0 -left-10 tracking-widest text-center z-[1] text-6xl font-black'>TESSERACT</p>
+            <p className='absolute top-0 left-2 tracking-widest text-center z-[1] text-4xl lg:text-6xl font-black'>TESSERACT</p>
           </div>
 
           {/* TEXT */}
