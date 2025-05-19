@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+* {
+  /* border: 1px solid white; */
+  box-sizing: border-box;
+  scrollbar-width: none;
+}
+
+.flex-col-center {
+  @apply flex flex-col items-center justify-center
+}
+
+.flex-center {
+  @apply flex items-center justify-center
+}
+
+.btn-responsive {
+  @apply btn-lg sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl
+}
+
+.transition-default {
+  @apply transition-all duration-400 ease-in-out
+}
