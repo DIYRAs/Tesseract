@@ -1,13 +1,54 @@
+import { useState, useEffect } from 'react'
 import './App.css'
 import { motion } from 'framer-motion'
+import Text_rain from './components/text_rain'
 
 function App() {
-  const text = 'Unlock the Power of Infinite Possibilities'
-  const text_tesseract = 'TESSERACT'
+  const [click, setClick] = useState(false)
+
+  const [rainCount, setRainCount] = useState(5);
+
+  // Cek ukuran layar saat ini
+  useEffect(() => {
+    const updateCount = () => {
+      const width = window.innerWidth;
+
+      if (width < 640) {
+        // sm
+        setRainCount(5);
+      } else if (width < 768) {
+        // md
+        setRainCount(10);
+      } else if (width < 1024) {
+        // lg
+        setRainCount(20);
+      } else {
+        // xl ke atas
+        setRainCount(30);
+      }
+    };
+
+    updateCount(); // cek saat pertama kali load
+    window.addEventListener("resize", updateCount); // update saat resize
+
+    return () => window.removeEventListener("resize", updateCount);
+  }, []);
+
+  const generate_text_rain = (number) => {
+    const elements = []
+    for (let i = 0; i < number; i++) {
+      let random_x = Math.floor(Math.random() * 100);
+      let random_y = Math.floor(Math.random() * 100);
+
+      elements.push(<Text_rain key={i} text='TESSERACT' x={random_x} y={random_y} />)
+    }
+
+    return elements
+  }
 
   return (
     <>
-      <div className='bg-black h-auto w-full flex-col-center py-12 px-8'>
+      <div className='bg-black h-auto w-full flex-col-center pt-6 pb-1 px-1 md:px-5 md:pb-5'>
 
         {/* MAIN HERO */}
         <div className='relative rounded-2xl py-6 px-12 bg-white text-black flex-col-center mt-10'>
@@ -18,7 +59,10 @@ function App() {
               <h1 className='font-bold pl-2 text-xl'>DIYRA</h1>
             </div>
 
-            <ul className='absolute group top-14 left-3.5 h-12 w-12 hover:w-11/12 transition-default flex-center gap-14 bg-black text-white rounded-full'>
+            <ul className={`absolute group top-14 left-3.5 h-12 w-12 hover:w-11/12 transition-default 
+                            flex-center gap-14 bg-black text-white rounded-full
+                            ${click ? 'w-11/12' : 'w-12'}`}
+              onClick={() => setClick(prev => !prev)} >
               <div className='absolute group-hover:-z-10 w-10 h-10 rounded-full bg-black flex-center text-2xl pb-1 pl-1'>►</div>
               {/* <li className='absolute group-hover:block cursor-pointer flex-center text-2xl'>►</li> */}
               <li className='hidden group-hover:block cursor-pointer'>HOME</li>
@@ -40,7 +84,7 @@ function App() {
           </div>
 
           {/* IMAGE */}
-          <div className='relative my-12'>
+          <div className='relative my-12 w-full flex-center'>
             <img
               className='relative z-10'
               src="tesseract_hd.gif"
@@ -48,23 +92,9 @@ function App() {
               style={{ filter: 'drop-shadow(5px 5px 10px blue)' }}
             />
 
-            <p className='absolute -top-2 -left-21 [writing-mode:vertical-rl] [text-orientation:upright] tracking-widest text-center'>
-              {text_tesseract.split('').map((char, index) => (
-                <motion.span
-                  key={index}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [1, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    repeatDelay: 0.5,
-                    delay: index * 0.1
-                  }} >
-                  {char}
-                </motion.span>
-              ))}
-            </p>
-            <p className='absolute top-0 left-2 tracking-widest text-center z-[1] text-4xl lg:text-6xl font-black'>TESSERACT</p>
+            {generate_text_rain(rainCount)}
+
+            <p className='absolute top-0 -left-6 tracking-widest text-center z-[1] text-4xl sm:text-6xl md:text-7xl font-black'>TESSERACT</p>
           </div>
 
           {/* TEXT */}
@@ -92,9 +122,9 @@ function App() {
             </h1> */}
 
             <motion.h1
-              className="text-start text-3xl font-bold mt-12 mb-2 text-shadow-lg"
+              className="text-start text-xl sm:text-3xl md:text-5xl font-bold mt-12 mb-2 text-shadow-lg"
             >
-              {text.split('').map((char, index) => (
+              {'Unlock the Power of Infinite Possibilities'.split('').map((char, index) => (
                 <motion.span
                   key={index}
                   className="bg-gradient-to-r from-black via-white to-black bg-[length:200%_auto] bg-clip-text text-transparent"
